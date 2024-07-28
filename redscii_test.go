@@ -161,6 +161,16 @@ func TestGetRawPixelRGBA(t *testing.T) {
 			}
 		})
 	}
+
+	t.Run("zero_alpha_NRGBA_test", func(t *testing.T) {
+		c := color.NRGBA{R: 255, G: 255, B: 255, A: 0}
+
+		r, g, b, a := getRawPixelRGBA(c)
+
+		if uint8(r) != 0 || uint8(g) != 0 || uint8(b) != 0 || uint8(a) != 0 {
+			t.Errorf("Expected color {%d, %d, %d, %d}, got {%d, %d, %d, %d}.", 0, 0, 0, 0, r, g, b, a)
+		}
+	})
 }
 
 func generateCustomSizeImage(r image.Rectangle, c color.RGBA) image.Image {
