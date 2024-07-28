@@ -111,19 +111,21 @@ func getRawPixelRGBA(c color.Color) (uint32, uint32, uint32, uint32) {
 	r, g, b, a := c.RGBA()
 	switch c.(type) {
 	case color.NRGBA:
-		// Transform these to non aphla-premultiplied values.
 		a = a >> 8
-		r *= 0xFF
-		r /= a
-		r = r >> 8
+		// if alpha channel is zero (100% transparent), we can't do much here, all RGB values will be zero.
+		if a > 0 {
+			r *= 0xFF
+			r /= a
+			r = r >> 8
 
-		g *= 0xFF
-		g /= a
-		g = g >> 8
+			g *= 0xFF
+			g /= a
+			g = g >> 8
 
-		b *= 0xFF
-		b /= a
-		b = b >> 8
+			b *= 0xFF
+			b /= a
+			b = b >> 8
+		}
 
 	case color.RGBA:
 		// Values are assumed to be already premultiplied, return as is.
